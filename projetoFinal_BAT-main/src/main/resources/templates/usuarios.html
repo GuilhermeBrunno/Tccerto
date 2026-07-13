@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Usuarios')"></head>
+<body>
+<div class="app">
+    <div th:replace="fragments/layout :: sidebar('usuarios')"></div>
+
+    <div class="main">
+        <div th:replace="fragments/layout :: topbar('Usuarios do Sistema')"></div>
+
+        <div class="content">
+            <div th:if="${sucesso}" class="alert-sucesso" th:text="${sucesso}"></div>
+
+            <div class="page-header">
+                <h1>Usuarios do Sistema</h1>
+                <div style="display:flex; gap:10px;">
+                    <a th:href="@{/usuarios/novo}" class="btn-primario">Novo Usuario</a>
+                    <a th:href="@{/dashboard}" class="btn-secundario">Voltar ao dashboard</a>
+                </div>
+            </div>
+
+            <div class="cards-grid" th:if="${usuarios != null and !usuarios.isEmpty()}">
+                <div class="stat-card" th:each="u : ${usuarios}"
+                     th:classappend="${u.tipo == 'LIDER' ? 'andamento' : (u.tipo == 'TECNICO' ? 'concluido' : (u.tipo == 'ESPECIALISTA' ? 'escalado' : (u.tipo == 'OPERADOR' ? 'aberto' : '')))}">
+                    <div class="stat-label" th:text="${u.tipo}">Tipo</div>
+                    <div class="stat-value" style="font-size:1.15rem;" th:text="${u.nome}">Nome</div>
+                    <div class="stat-card-info">
+                        <div th:text="|Login: ${u.login}|">Login</div>
+                        <div th:text="|Setor: ${u.setor}|">Setor</div>
+                    </div>
+                    <div th:if="${u.tipo == 'TECNICO' or u.tipo == 'ESPECIALISTA' or u.tipo == 'LIDER'}"
+                         class="stat-card-metrics">
+                        <div>
+                            <strong class="metric-active" th:text="${u.chamadosAtivos}">0</strong>
+                            <span> ativos</span>
+                        </div>
+                        <div>
+                            <strong class="metric-done" th:text="${u.concluidos}">0</strong>
+                            <span> concluidos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${usuarios == null or usuarios.isEmpty()}">
+                <p>Nenhum usuario cadastrado no sistema.</p>
+            </div>
+
+            <div style="margin-top:28px;">
+                <h2 style="font-size:1.15rem; font-weight:800; color:var(--bat-azul); margin-bottom:16px;">Tipos de Usuario</h2>
+                <div class="cards-grid">
+                    <div class="stat-card aberto">
+                        <div class="stat-label">OPERADOR</div>
+                        <div class="stat-card-info">Abre chamados de maquinas com falha</div>
+                    </div>
+                    <div class="stat-card concluido">
+                        <div class="stat-label">TECNICO</div>
+                        <div class="stat-card-info">Assume e repara chamados</div>
+                    </div>
+                    <div class="stat-card andamento">
+                        <div class="stat-label">LIDER</div>
+                        <div class="stat-card-info">Supervisiona e recebe alertas</div>
+                    </div>
+                    <div class="stat-card escalado">
+                        <div class="stat-label">ESPECIALISTA</div>
+                        <div class="stat-card-info">Resolve casos complexos escalados</div>
+                    </div>
+                    <div class="stat-card pausado">
+                        <div class="stat-label">VISUALIZADOR</div>
+                        <div class="stat-card-info">Apenas visualiza informacoes</div>
+                    </div>
+                    <div class="stat-card tempo">
+                        <div class="stat-label">ADMIN</div>
+                        <div class="stat-card-info">Administrador do sistema</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

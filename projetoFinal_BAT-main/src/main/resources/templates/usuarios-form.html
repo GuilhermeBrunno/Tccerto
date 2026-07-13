@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Novo Usuario')"></head>
+<body>
+<div class="app">
+    <div th:replace="fragments/layout :: sidebar('usuarios')"></div>
+
+    <div class="main">
+        <div th:replace="fragments/layout :: topbar('Novo Usuario')"></div>
+
+        <div class="content">
+            <div class="page-header">
+                <h1>Cadastrar Novo Usuario</h1>
+                <a th:href="@{/usuarios}" class="btn-secundario">Voltar</a>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/usuarios/novo}" th:object="${usuario}" method="post">
+                    <div class="form-grid">
+
+                        <div class="form-field">
+                            <label>Nome completo</label>
+                            <input type="text" th:field="*{nome}" placeholder="Nome do usuario">
+                            <div class="field-erro" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Login</label>
+                            <input type="text" th:field="*{login}" placeholder="Login para acesso">
+                            <div class="field-erro" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Senha</label>
+                            <input type="password" th:field="*{senha}" placeholder="Senha de acesso">
+                            <div class="field-erro" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Tipo de usuario</label>
+                            <select th:field="*{tipo}" required>
+                                <option value="">-- Selecione --</option>
+                                <option th:each="t : ${tipos}" th:value="${t.name()}" th:text="${t.name()}">Tipo</option>
+                            </select>
+                            <div class="field-erro" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></div>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Setor (opcional)</label>
+                            <select name="setorId">
+                                <option value="0">-- Sem setor --</option>
+                                <option th:each="s : ${setores}" th:value="${s.id}" th:text="${s.nome}">Setor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field full" style="flex-direction:row; gap:12px;">
+                            <button type="submit" class="btn-primario">Cadastrar usuario</button>
+                            <a th:href="@{/usuarios}" class="btn-secundario" style="text-align:center;">Cancelar</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="detalhe-card" style="margin-top:24px;">
+                <h2>Tipos de usuario</h2>
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:12px; margin-top:12px;">
+                    <div>
+                        <strong>ADMIN</strong>
+                        <p style="font-size:0.82rem; color:var(--texto-suave); margin:4px 0 0;">Acesso total ao sistema</p>
+                    </div>
+                    <div>
+                        <strong>OPERADOR</strong>
+                        <p style="font-size:0.82rem; color:var(--texto-suave); margin:4px 0 0;">Abre chamados de falha</p>
+                    </div>
+                    <div>
+                        <strong>TECNICO</strong>
+                        <p style="font-size:0.82rem; color:var(--texto-suave); margin:4px 0 0;">Assume e repara chamados</p>
+                    </div>
+                    <div>
+                        <strong>LIDER</strong>
+                        <p style="font-size:0.82rem; color:var(--texto-suave); margin:4px 0 0;">Supervisiona e recebe alertas</p>
+                    </div>
+                    <div>
+                        <strong>ESPECIALISTA</strong>
+                        <p style="font-size:0.82rem; color:var(--texto-suave); margin:4px 0 0;">Resolve casos escalados</p>
+                    </div>
+                    <div>
+                        <strong>VISUALIZADOR</strong>
+                        <p style="font-size:0.82rem; color:var(--texto-suave); margin:4px 0 0;">Apenas consulta informacoes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

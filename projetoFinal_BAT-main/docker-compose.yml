@@ -1,0 +1,15 @@
+services:
+  bat-dashboard:
+    build: .
+    image: bat-dashboard:latest
+    container_name: bat-dashboard
+    ports:
+      - "8086:8080"
+    volumes:
+      - bat-data:/app/data
+      - bat-uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  bat-data:
+  bat-uploads:

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${status} + ' | BAT Dashboard'">Erro</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            background: url(https://i.imgur.com/76NZB7A.gif) no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            background-color: #000245;
+            height: 100%;
+        }
+
+        .text-wrapper {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 9em;
+            font-weight: 700;
+            color: #EE4B5E;
+            position: relative;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .title:after {
+            content: attr(data-content);
+            position: absolute;
+            left: 4px;
+            top: 0;
+            color: rgba(0,0,0,0.15);
+            z-index: -1;
+        }
+
+        .title.title-403 { color: #c25a1e; }
+        .title.title-403:after { color: rgba(194,90,30,0.2); }
+        .title.title-500 { color: #b5302a; }
+        .title.title-500:after { color: rgba(181,48,42,0.2); }
+
+        .subtitle {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1FA9D6;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle-detail {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 40px;
+            text-align: center;
+            max-width: 460px;
+            line-height: 1.5;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        a.button {
+            font-weight: 700;
+            border: 2px solid #EE4B5E;
+            text-decoration: none;
+            padding: 14px 28px;
+            text-transform: uppercase;
+            color: #EE4B5E;
+            border-radius: 26px;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        a.button:hover {
+            background-color: #EE4B5E;
+            color: white;
+        }
+
+        a.button.btn-403 { border-color: #c25a1e; color: #c25a1e; }
+        a.button.btn-403:hover { background-color: #c25a1e; color: white; }
+        a.button.btn-500 { border-color: #b5302a; color: #b5302a; }
+        a.button.btn-500:hover { background-color: #b5302a; color: white; }
+
+        a.button.btn-sec {
+            border-color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.5);
+        }
+        a.button.btn-sec:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.6);
+            color: white;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 24px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.2);
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+<div class="text-wrapper">
+    <div class="title"
+         th:attr="data-content=${status}"
+         th:classappend="${status == 403} ? 'title-403' : (${status == 500} ? 'title-500' : '')"
+         th:text="${status}">404</div>
+
+    <div class="subtitle" th:switch="${status}">
+        <span th:case="403">Acesso negado</span>
+        <span th:case="404">Pagina nao encontrada</span>
+        <span th:case="500">Erro interno do servidor</span>
+        <span th:case="*">Algo deu errado</span>
+    </div>
+
+    <div class="subtitle-detail" th:switch="${status}">
+        <span th:case="403">Voce nao tem permissao para acessar esta pagina. Entre com um usuario que tenha o nivel de acesso necessario.</span>
+        <span th:case="404">A pagina que voce procura nao foi encontrada. Verifique o endereco ou volte ao inicio.</span>
+        <span th:case="500">Ocorreu um erro inesperado. Tente novamente em alguns instantes.</span>
+        <span th:case="*">Tente novamente ou volte ao dashboard.</span>
+    </div>
+
+    <div class="buttons">
+        <a th:href="@{/dashboard}" class="button"
+           th:classappend="${status == 403} ? 'btn-403' : (${status == 500} ? 'btn-500' : '')">
+            Ir ao Dashboard
+        </a>
+        <a th:href="@{/login}" class="button btn-sec">
+            Tela de login
+        </a>
+    </div>
+</div>
+
+<div class="footer">BAT Brasil &middot; Uberlandia</div>
+</body>
+</html>
